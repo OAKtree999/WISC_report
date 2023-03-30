@@ -8,6 +8,7 @@ from docx import Document
 from docx.shared import Inches
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 import tempfile
+import base64 
 
 def extract_text_tables(file_path):
     tables = {}
@@ -52,7 +53,13 @@ uploaded_key = st.sidebar.text_input('OpenAI 키를 입력')
 
 if uploaded_file is not None:
 
-    korean_tables = extract_text_tables(uploaded_file.name)
+    # byte object into a PDF file 
+    with open("input.pdf", "wb") as f:
+        base64_pdf = base64.b64encode(uploaded_file.read()).decode('utf-8')
+        f.write(base64.b64decode(base64_pdf))
+    f.close()
+
+    korean_tables = extract_text_tables("input.pdf")
 
     df = korean_tables
     df_info = pd.DataFrame(df[0])
