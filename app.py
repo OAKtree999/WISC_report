@@ -66,7 +66,7 @@ if uploaded_file is not None:
 
     # extract the variables
     examiner = df_info.iloc[0, 0]
-    subject = "Test"
+    subject = df_info.iloc[0, 1]
     gender = df_info.iloc[1, 1]
     testing_date = df_info.iloc[2, 0]
     age = df_info.iloc[2, 1].split()[0][1:3]
@@ -98,7 +98,7 @@ if uploaded_file is not None:
     body = f'''K-WISC-V(한국 웩슬러 아동 지능검사 5판)로 추정한 현재 지능은 '{fsiq_level}'(FSIQ: {fsiq_score}) 범위에 속하는 하며, 백분위가 {math.ceil(fsiq_percentile)}%ile로 나타났다. 이는 {fsiq_score}점 아래에 있는 학생들이 전체 중 {math.ceil(fsiq_percentile)}%가 있다는 것을 의미합니다. 좀 더 쉽게 설명하면, 전체 100명 중 {math.ceil(fsiq_percentile)}번째에 위치 하는 것이며, 앞에서 {math.ceil(fsiq_ranking)}등이라고 할 수 있습니다.
     95% 신뢰구간은 {fsiq_confidence}으로 학생이 검사를 100번 실시했을 때 95번은 {fsiq_confidence}사이의 점수를 받게 된다는 의미입니다. 학생의 컨디션이나 기타 환경적 요소 때문에 어떤 날은 좀 더 높은 점수를 받을 수 있고, 어떤 날은 좀 더 낮은 점수를 받을 수 있습니다. 대부분의 경우는 두 점수 사이의 평균적인 점수를 받게 될 것입니다. '''
 
-    #!----- Plotly -----
+
     fig = go.Figure()
     fig.add_trace(go.Scatter(
         x=scales_df['지표'],
@@ -116,9 +116,7 @@ if uploaded_file is not None:
         yaxis_range=[40, 160],
         margin=dict(l=0, r=0, t=50, b=40)
     )
-    
 
-    #!----- Streamlit -----
     st.header('연구 참가자 K-WISC-V 보고서')
     st.markdown('')
     col1, col2 = st.columns(2)
@@ -151,7 +149,7 @@ if uploaded_file is not None:
     generate = st.checkbox("보고서 생성")
     if generate == True:
         # Load the report.docx file using python-docx
-        document = Document('report.docx')
+        document = Document('./report/report.docx')
         # Replace the markers with the corresponding values
         for table in document.tables:
             for row in table.rows:
@@ -193,7 +191,6 @@ if uploaded_file is not None:
             mime="application/octet-stream"
         )
 
-    #!----- OpenAI -----
     openai.api_key = uploaded_key
     prompt = f'''
     {scales_df}
