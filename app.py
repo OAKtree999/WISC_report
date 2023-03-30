@@ -101,7 +101,7 @@ if uploaded_file is not None:
 
     fig = go.Figure()
     fig.add_trace(go.Scatter(
-        x=['VCI', 'VSI', 'FRI', 'WMI', 'PSI', 'FSIQ'],
+        x=scales_df['지표'],
         y=scales_df['지표점수'],
         mode='lines+markers+text',
         name='K-WISC-V',
