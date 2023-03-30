@@ -173,7 +173,7 @@ if uploaded_file is not None:
                             # Insert the plotly chart as a picture
                             cell.text = cell.text.replace('<<picture>>', '')
                             run = cell.paragraphs[0].add_run()
-                            run.add_picture(tmp_file.name, width=Inches(6), height=Inches(3), font_name='Nanum Gothic')
+                            run.add_picture(tmp_file.name, width=Inches(6), height=Inches(3))
                     if '<<interpretation>>' in cell.text:
                         # Insert the interpretation text
                         cell.text = cell.text.replace('<<interpretation>>', '')
